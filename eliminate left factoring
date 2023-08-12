@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminateLeftFactoring(char *rule1, char *rule2) {
+    int i = 0;
+    while (rule1[i] != '\0' && rule2[i] != '\0' && rule1[i] == rule2[i]) {
+        i++;
+    }
+
+    if (i > 0) {
+        printf("Common prefix: %.*s\n", i, rule1);
+        printf("%s' -> %.*s%s\n", rule1, i, rule1, "'");
+        printf("%s -> %.*s%s\n", rule2, strlen(rule2) - i, &rule2[i]);
+    } else {
+        printf("No left factoring found.\n");
+    }
+}
+
+int main() {
+    char rule1[] = "AaB";
+    char rule2[] = "AaC";
+
+    eliminateLeftFactoring(rule1, rule2);
+
+    return 0;
+}
