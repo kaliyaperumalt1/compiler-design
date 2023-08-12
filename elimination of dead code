@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+// Function that is never called
+void unusedFunction() {
+    printf("This function is never called.\n");
+}
+
+int main() {
+    int a = 5;
+    int b = 10;
+
+    // Code that is not used based on the condition
+    if (a > b) {
+        printf("a is greater than b.\n");
+    } else {
+        printf("b is greater than or equal to a.\n");
+    }
+
+    // Code that is used
+    printf("The sum of a and b is: %d\n", a + b);
+
+    return 0;
+}
