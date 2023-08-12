@@ -1,0 +1,14 @@
+%{
+#include <stdio.h>
+#include <string.h>
+%}
+
+%%
+"old_word"    { printf("new_word "); }
+.|\n          ECHO;
+%%
+
+int main() {
+    yylex(); // Start the lexer
+    return 0;
+}
