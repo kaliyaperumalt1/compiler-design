@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure to represent a Quadruple
+typedef struct {
+    char op;
+    char arg1[10];
+    char arg2[10];
+    char result[10];
+} Quadruple;
+
+int main() {
+    Quadruple quads[100];  // Array to store quadruples
+    int quadCount = 0;     // Count of generated quadruples
+
+    char expr[100];
+    printf("Enter an arithmetic expression: ");
+    fgets(expr, sizeof(expr), stdin);
+    expr[strcspn(expr, "\n")] = '\0';  // Remove newline
+
+    char temp[10];  // Temporary variable counter
+    int tempCount = 0;
+
+    char opStack[100];      // Operator stack
+    int opStackTop = -1;    // Top of operator stack
+    char tempStack[100][10];  // Temporary variable stack
+    int tempStackTop = -1;   // Top of temporary variable stack
+
+    for (int i = 0; i < strlen(expr); i++) {
+        char token = expr[i];
+
+        if (token >= 'a' && token <= 'z') {
+            tempCount++;
+            sprintf(temp, "t%d", tempCount);
+            strcpy(tempStack[++tempStackTop], temp);
+        } else if (token == '+' || token == '-' || token == '*' || token == '/') {
+            opStack[++opStackTop] = token;
+        } else if (token == ')') {
+            char op = opStack[opStackTop--];
+            char arg2[10], arg1[10];
+            strcpy(arg2, tempStack[tempStackTop--]);
+            strcpy(arg1, tempStack[tempStackTop--]);
+            tempCount++;
+            sprintf(temp, "t%d", tempCount);
+            strcpy(tempStack[++tempStackTop], temp);
+
+            // Generate quadruple
+            Quadruple q;
+            q.op = op;
+            strcpy(q.arg1, arg1);
+            strcpy(q.arg2, arg2);
+            strcpy(q.result, temp);
+            quads[quadCount++] = q;
+        }
+    }
+
+    printf("\nGenerated Quadruples:\n");
+    for (int i = 0; i < quadCount; i++) {
+        printf("%c %s %s %s\n", quads[i].op, quads[i].arg1, quads[i].arg2, quads[i].result);
+    }
+
+    return 0;
+}
