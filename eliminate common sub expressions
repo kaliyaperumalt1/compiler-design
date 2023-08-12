@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char op;
+    char arg1[10];
+    char arg2[10];
+    char result[10];
+} Quadruple;
+
+void eliminateCommonSubexpressions(Quadruple quads[], int quadCount) {
+    for (int i = 0; i < quadCount; i++) {
+        for (int j = i + 1; j < quadCount; j++) {
+            if (strcmp(quads[i].arg1, quads[j].arg1) == 0 && strcmp(quads[i].arg2, quads[j].arg2) == 0) {
+                strcpy(quads[j].result, quads[i].result);
+            }
+        }
+    }
+}
+
+int main() {
+    Quadruple quads[] = {
+        {'+', "a", "b", "t1"},
+        {'*', "t1", "c", "t2"},
+        {'+', "a", "b", "t3"},
+        {'*', "t3", "c", "t4"},
+        {'-', "t2", "t4", "result"}
+    };
+
+    int quadCount = sizeof(quads) / sizeof(Quadruple);
+
+    printf("Original Quadruples:\n");
+    for (int i = 0; i < quadCount; i++) {
+        printf("%c %s %s %s\n", quads[i].op, quads[i].arg1, quads[i].arg2, quads[i].result);
+    }
+
+    eliminateCommonSubexpressions(quads, quadCount);
+
+    printf("\nAfter Eliminating Common Subexpressions:\n");
+    for (int i = 0; i < quadCount; i++) {
+        printf("%c %s %s %s\n", quads[i].op, quads[i].arg1, quads[i].arg2, quads[i].result);
+    }
+
+    return 0;
+}
