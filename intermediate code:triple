@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char op;
+    char arg1[10];
+    char arg2[10];
+} Triple;
+
+int main() {
+    Triple triples[100];
+    int tripleCount = 0;
+
+    char expr[100];
+    printf("Enter an arithmetic expression: ");
+    fgets(expr, sizeof(expr), stdin);
+    expr[strcspn(expr, "\n")] = '\0';  // Remove newline
+
+    char temp[10];
+    int tempCount = 0;
+
+    char opStack[100];
+    int opStackTop = -1;
+    char tempStack[100][10];
+    int tempStackTop = -1;
+
+    for (int i = 0; i < strlen(expr); i++) {
+        char token = expr[i];
+
+        if (token >= 'a' && token <= 'z') {
+            tempCount++;
+            sprintf(temp, "t%d", tempCount);
+            strcpy(tempStack[++tempStackTop], temp);
+        } else if (token == '+' || token == '-' || token == '*' || token == '/') {
+            opStack[++opStackTop] = token;
+        } else if (token == ')') {
+            char op = opStack[opStackTop--];
+            char arg2[10], arg1[10];
+            strcpy(arg2, tempStack[tempStackTop--]);
+            strcpy(arg1, tempStack[tempStackTop--]);
+            tempCount++;
+            sprintf(temp, "t%d", tempCount);
+            strcpy(tempStack[++tempStackTop], temp);
+
+            // Generate triple
+            Triple t;
+            t.op = op;
+            strcpy(t.arg1, arg1);
+            strcpy(t.arg2, arg2);
+            triples[tripleCount++] = t;
+        }
+    }
+
+    printf("\nGenerated Triples:\n");
+    for (int i = 0; i < tripleCount; i++) {
+        printf("%c %s %s\n", triples[i].op, triples[i].arg1, triples[i].arg2);
+    }
+
+    return 0;
+}
