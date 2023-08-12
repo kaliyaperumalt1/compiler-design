@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char input[1000]; // Assuming a maximum input length of 1000 characters
+
+    printf("Enter a C program:\n");
+    fgets(input, sizeof(input), stdin); // Read input including spaces
+
+    printf("\nTokens and their captions:\n");
+
+    // Use strtok to tokenize the input
+    char *token = strtok(input, " ");
+    int tokenNumber = 1;
+
+    while (token != NULL) {
+        // Determine the appropriate caption based on the token
+        char caption[50];
+        if (strcmp(token, "#include") == 0) {
+            strcpy(caption, "Preprocessor Directive (Header Include)");
+        } else if (strcmp(token, "int") == 0 || strcmp(token, "char") == 0 || strcmp(token, "float") == 0) {
+            strcpy(caption, "Data Type");
+        } else if (strcmp(token, "if") == 0 || strcmp(token, "else") == 0 || strcmp(token, "while") == 0) {
+            strcpy(caption, "Control Statement");
+        } else {
+            strcpy(caption, "Identifier or Literal");
+        }
+
+        // Print token with its caption
+        printf("Token %d: %s\nCaption: %s\n", tokenNumber, token, caption);
+
+        // Get the next token
+        token = strtok(NULL, " ");
+        tokenNumber++;
+    }
+
+    return 0;
+}
