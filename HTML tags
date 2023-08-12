@@ -1,0 +1,13 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+<[^>]+>    printf("HTML Tag: %s\n", yytext);
+.|\n       /* ignore other characters */
+%%
+
+int main() {
+    yylex(); // Start the lexer
+    return 0;
+}
