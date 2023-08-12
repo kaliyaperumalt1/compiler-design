@@ -1,0 +1,24 @@
+%{
+#include <stdio.h>
+#include <string.h>
+%}
+
+%%
+"exit"   return 0; // Exit the program if the user enters "exit"
+.|\n     {}        // Ignore other characters
+
+%%
+int main() {
+    char target_word[100];
+    int frequency = 0;
+    
+    printf("Enter the target word: ");
+    scanf("%s", target_word);
+
+    yyin = stdin; // Set the input to standard input
+    yylex();      // Start the lexer
+
+    printf("Frequency of the word '%s': %d\n", target_word, frequency);
+
+    return 0;
+}
